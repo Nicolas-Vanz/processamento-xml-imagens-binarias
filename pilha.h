@@ -34,6 +34,9 @@ class LinkedStack {
     //! tamanho da pilha
     std::size_t size() const;
 
+    //! display
+    void display();
+
  private:
     //! node/elemento
     class Node {
@@ -140,5 +143,15 @@ bool structures::LinkedStack<T>::empty() const {
 template<typename T>
 std::size_t structures::LinkedStack<T>::size() const {
     return (size_);
+}
+
+template<typename T>
+void structures::LinkedStack<T>::display() {
+    Node *p = top_;
+    while (p) {
+        std::cout << p->data() << ' ';
+        p = p->next();
+    }
+    std::cout << std::endl;
 }
 #endif

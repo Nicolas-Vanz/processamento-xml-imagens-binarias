@@ -3,20 +3,24 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "fila.h"
 
-bool validade_file (char *filename);
+bool get_tags (char *filename);
+
+void get_datasets (char *filename);
 
 int main() {
 
     char xmlfilename[100];
+    structures::LinkedQueue<std::string>fila{};
     while (true){
-    std::cin >> xmlfilename;  // entrada
+        std::cin >> xmlfilename;  // entrada
 
-    if (!validade_file(xmlfilename)) {
-        std::cout << "error\n";
-    }
-
-    std::cout << xmlfilename << std::endl;  // esta linha deve ser removida
+        if (!get_tags(xmlfilename)) {
+            std::cout << "error\n";
+        } else {
+            get_datasets(xmlfilename);
+        }
     }
     return 0;
 }
