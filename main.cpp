@@ -17,16 +17,14 @@ int main() {
 
     char xmlfilename[100];
     structures::LinkedQueue<std::string>fila{};
-    while (true){
-        std::cin >> xmlfilename;  // entrada
+    std::cin >> xmlfilename;  // entrada
 
-        if (!validade_file(xmlfilename)) {
-            std::cout << "error\n";
-        } else {
-            get_tags(xmlfilename);
-            get_datasets();
-            results();
-        }
+    if (!validade_file(xmlfilename)) {
+        std::cout << "error\n";
+    } else {
+        get_tags(xmlfilename);
+        get_datasets();
+        results();
     }
     return 0;
 }

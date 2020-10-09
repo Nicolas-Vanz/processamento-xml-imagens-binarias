@@ -93,21 +93,17 @@ void get_datasets() {
             else if (elemento == "<width>") dataset->width = stoi(fila.dequeue());
             else if (elemento == "<name>") dataset->name = fila.dequeue();
             else if (elemento == "<data>") {
-                std::cout << elemento << std::endl;
-                while (is_open_tag(elemento)) {
-                    // TIRAR DO WHILE
-                    int **matrix = new int*[dataset->height];
-                    for (i = 0; i < dataset->height; i++) {
-                        matrix[i] = new int[dataset->width];
-                    }
-                    for (i = 0; i < dataset->height; i++) {
-                        elemento = fila.dequeue();
-                        for (j = 0; j < dataset->width; j++) {
-                            matrix[i][j] = (int)elemento[j];
-                        }
-                    }
-                    dataset->data = matrix;
+                int **matrix = new int*[dataset->height];
+                for (i = 0; i < dataset->height; i++) {
+                    matrix[i] = new int[dataset->width];
                 }
+                for (i = 0; i < dataset->height; i++) {
+                    elemento = fila.dequeue();
+                    for (j = 0; j < dataset->width; j++) {
+                        matrix[i][j] = (int)elemento[j] - 48;
+                    }
+                }
+                dataset->data = matrix;
             }
             if (elemento == "</img>" || fila.empty()) break;
             elemento = fila.dequeue();
@@ -121,13 +117,12 @@ void flood_fill(struct Dataset *dataset, int x, int y) {
 	dataset->data[x][y] = 0;
 	if (x > 0       && dataset->data[x - 1][y]) flood_fill(dataset, x - 1, y);
 	if (y > 0       && dataset->data[x][y - 1]) flood_fill(dataset, x    , y - 1);
-	if (x < dataset->width - 1 && dataset->data[x + 1][y]) flood_fill(dataset, x + 1, y);
-	if (y < dataset->height - 1 && dataset->data[x][y + 1]) flood_fill(dataset, x    , y + 1);
+	if (x < dataset->height - 1 && dataset->data[x + 1][y]) flood_fill(dataset, x + 1, y);
+	if (y < dataset->width - 1 && dataset->data[x][y + 1]) flood_fill(dataset, x    , y + 1);
 }
 
 int get_conexes(struct Dataset *dataset) {
 	int i, j, conexes = 0;
-	std::cout << dataset->data[0][0] << std::endl;
 	for (i = 0; i < dataset->height; i++) {
 		for (j = 0; j < dataset->width; j++) {
 			if (dataset->data[i][j]) {
