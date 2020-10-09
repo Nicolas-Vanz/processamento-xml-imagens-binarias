@@ -144,6 +144,7 @@ template<typename T>
 std::size_t structures::LinkedStack<T>::size() const {
     return (size_);
 }
+#endif
 
 template<typename T>
 void structures::LinkedStack<T>::display() {
@@ -154,4 +155,3 @@ void structures::LinkedStack<T>::display() {
     }
     std::cout << std::endl;
 }
-#endif

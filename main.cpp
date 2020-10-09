@@ -5,9 +5,13 @@
 #include <string>
 #include "fila.h"
 
-bool get_tags (char *filename);
+bool validade_file (char *filename);
 
-void get_datasets (char *filename);
+void get_tags (char *filename);
+
+void get_datasets();
+
+void results();
 
 int main() {
 
@@ -16,10 +20,12 @@ int main() {
     while (true){
         std::cin >> xmlfilename;  // entrada
 
-        if (!get_tags(xmlfilename)) {
+        if (!validade_file(xmlfilename)) {
             std::cout << "error\n";
         } else {
-            get_datasets(xmlfilename);
+            get_tags(xmlfilename);
+            get_datasets();
+            results();
         }
     }
     return 0;

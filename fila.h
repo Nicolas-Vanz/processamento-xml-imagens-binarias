@@ -1,7 +1,4 @@
 // Copyright [2020] <Nicolas Vanz>
-#ifndef FILA_H
-#define FILA_H
-
 #include <stdexcept>
 namespace structures {
 
@@ -179,4 +176,3 @@ void structures::LinkedQueue<T>::display() {
         p = p->next();
     }
 }
-#endif

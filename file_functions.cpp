@@ -10,10 +10,11 @@ struct Dataset {
     std::string name;
     int height;
     int width;
-    int *data;
+    int **data;
 };
 
 structures::LinkedQueue<std::string>fila{};
+structures::LinkedQueue<struct Dataset*>datasets{};
 
 
 bool is_open_tag(std::string tag) {
@@ -21,7 +22,7 @@ bool is_open_tag(std::string tag) {
     return true;
 }
 
-bool get_tags (char *filename) {
+bool validade_file (char *filename) {
     std::string line, tag, top;
     std::ifstream file(filename);
     structures::LinkedStack<std::string>stack{};
@@ -53,7 +54,7 @@ bool get_tags (char *filename) {
 }
 
 
-void get_datasets (char *filename) {
+void get_tags (char *filename) {
     std::string tag, data, line;
     std::ifstream file(filename);
     int i, j;
@@ -80,21 +81,71 @@ void get_datasets (char *filename) {
         }
     }
 }
-/*
-DoublyLinkedList get_datasets(char *filename) {
-    structures::DoublyLinkedList<struct *Dataset>lista{};
-    std::string line;
-    int start, end;
-    std::ifstream file(filename);
-    structures::LinkedStack<std::string>stack{};
+
+void get_datasets() {
+    std::string elemento;
     int i, j;
-    if (file.is_open()) {
-        while (getline (file, line)) {
-            struct Dataset *dataset;
-            start = IndexOf(line, "<name>");
-            end = IndexOf(line, "</name>");
-            dataset->name = line.substr(start + 6, end -1);
+    struct Dataset *dataset;
+    while (!fila.empty()) {
+        dataset = new Dataset;
+        while (true) {
+            if (elemento == "<height>") dataset->height = stoi(fila.dequeue());
+            else if (elemento == "<width>") dataset->width = stoi(fila.dequeue());
+            else if (elemento == "<name>") dataset->name = fila.dequeue();
+            else if (elemento == "<data>") {
+                std::cout << elemento << std::endl;
+                while (is_open_tag(elemento)) {
+                    // TIRAR DO WHILE
+                    int **matrix = new int*[dataset->height];
+                    for (i = 0; i < dataset->height; i++) {
+                        matrix[i] = new int[dataset->width];
+                    }
+                    for (i = 0; i < dataset->height; i++) {
+                        elemento = fila.dequeue();
+                        for (j = 0; j < dataset->width; j++) {
+                            matrix[i][j] = (int)elemento[j];
+                        }
+                    }
+                    dataset->data = matrix;
+                }
+            }
+            if (elemento == "</img>" || fila.empty()) break;
+            elemento = fila.dequeue();
         }
+        elemento = fila.dequeue();
+        datasets.enqueue(dataset);
     }
 }
-*/
+
+void flood_fill(struct Dataset *dataset, int x, int y) {
+	dataset->data[x][y] = 0;
+	if (x > 0       && dataset->data[x - 1][y]) flood_fill(dataset, x - 1, y);
+	if (y > 0       && dataset->data[x][y - 1]) flood_fill(dataset, x    , y - 1);
+	if (x < dataset->width - 1 && dataset->data[x + 1][y]) flood_fill(dataset, x + 1, y);
+	if (y < dataset->height - 1 && dataset->data[x][y + 1]) flood_fill(dataset, x    , y + 1);
+}
+
+int get_conexes(struct Dataset *dataset) {
+	int i, j, conexes = 0;
+	std::cout << dataset->data[0][0] << std::endl;
+	for (i = 0; i < dataset->height; i++) {
+		for (j = 0; j < dataset->width; j++) {
+			if (dataset->data[i][j]) {
+				flood_fill(dataset, i, j);
+				conexes++;
+			}
+		}
+	}
+	return conexes;
+}
+
+void results() {
+    int i;
+    struct Dataset *dataset;
+    while (!datasets.empty()) {
+        dataset = datasets.dequeue();
+        std::cout << dataset->name << ' ';
+        std::cout << get_conexes(dataset) << std::endl;
+    }
+    fila.clear();
+}
