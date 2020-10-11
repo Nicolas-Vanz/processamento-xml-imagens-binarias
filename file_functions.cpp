@@ -67,11 +67,11 @@ void get_tags (char *filename) {
                     while (line[j] != '>') j++;
                     tag = line.substr(i, j - i + 1);
                     fila.enqueue(tag);
-                    i = j;
+                    i = j + 1;
                 } else {
                     j = i;
                     while (line[j] != '<' && j < line.size()) j++;
-                    data = line.substr(i + 1, j - i - 1);
+                    data = line.substr(i, j - i);
                     i = j;
                     if (data[0] != '\0') {
                         fila.enqueue(data);
@@ -100,7 +100,9 @@ void get_datasets() {
                 for (i = 0; i < dataset->height; i++) {
                     elemento = fila.dequeue();
                     for (j = 0; j < dataset->width; j++) {
-                        matrix[i][j] = (int)elemento[j] - 48;
+                        if (elemento[j]){
+                            matrix[i][j] = (int)elemento[j] - 48;
+                        }
                     }
                 }
                 dataset->data = matrix;
@@ -114,20 +116,33 @@ void get_datasets() {
 }
 
 void flood_fill(struct Dataset *dataset, int x, int y) {
-	dataset->data[x][y] = 0;
-	if (x > 0       && dataset->data[x - 1][y]) flood_fill(dataset, x - 1, y);
-	if (y > 0       && dataset->data[x][y - 1]) flood_fill(dataset, x    , y - 1);
-	if (x < dataset->height - 1 && dataset->data[x + 1][y]) flood_fill(dataset, x + 1, y);
-	if (y < dataset->width - 1 && dataset->data[x][y + 1]) flood_fill(dataset, x    , y + 1);
+    if (dataset->data[x][y] == 1) {
+        dataset->data[x][y] = 0;
+    	if (x > 0) flood_fill(dataset, x - 1, y);
+    	if (y > 0) flood_fill(dataset, x    , y - 1);
+    	if (x < dataset->height - 1) flood_fill(dataset, x + 1, y);
+    	if (y < dataset->width - 1) flood_fill(dataset, x    , y + 1);
+    }
+}
+
+void display(struct Dataset *p) {
+    int i, j;
+    for (i = 0; i < p->height; i++) {
+        for (j = 0; j < p->width; j++) {
+            std::cout << p->data[i][j] << ' ';
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 int get_conexes(struct Dataset *dataset) {
 	int i, j, conexes = 0;
 	for (i = 0; i < dataset->height; i++) {
 		for (j = 0; j < dataset->width; j++) {
-			if (dataset->data[i][j]) {
+			if (dataset->data[i][j] == 1) {
+				conexes += 1;
 				flood_fill(dataset, i, j);
-				conexes++;
 			}
 		}
 	}
@@ -142,5 +157,4 @@ void results() {
         std::cout << dataset->name << ' ';
         std::cout << get_conexes(dataset) << std::endl;
     }
-    fila.clear();
 }
