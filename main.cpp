@@ -1,4 +1,4 @@
-//Copyright [2020] <Nicolas Vanz & Leonardo Rocha>
+//Copyright [2020] <Leonardo Rocha & Nicolas Vanz>
 
 #include <iostream>
 #include <fstream>
@@ -14,16 +14,17 @@ void get_datasets();
 void results();
 
 int main() {
-
     char xmlfilename[100];
-    structures::LinkedQueue<std::string>fila{};
-    std::cin >> xmlfilename;  // entrada
-
+    std::cin >> xmlfilename;  //!< arquivo a ser processado
+	/* verifica se o arquivo é válido*/
     if (!validade_file(xmlfilename)) {
         std::cout << "error\n";
     } else {
+		/* processa o arquivo e obtém as tags e seus valores*/
         get_tags(xmlfilename);
+		/* organiza as tags e valores em datasets */
         get_datasets();
+		/* processa os datasets e calcula os resultados */
         results();
     }
     return 0;
