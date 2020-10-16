@@ -63,17 +63,13 @@ bool validade_file (char *filename) {
                     while (line[j] != '>') j++;
 					/* Obtém a tag */
                     tag = line.substr(i, j - i + 1);
-
                     if (!is_open_tag(tag)) {  /* É uma tag de fechamento */
 						/* Analisa a validade da tag (se ela faz sentido no contexto do arquivo) */
-
 						/* Se a pilha está vazia significa que uma tag não foi aberta */
                         if (stack.empty()) return false;
-
 						/* Verifica se a tag fecha a tag de abertura correspondente */
                         top = stack.pop();
                         if (top.substr(1, top.size() - 2) != tag.substr(2, tag.size() - 3)) return false;
-
                     } else {  /* É uma tag de abertura */
 						/* empilhada a tag*/
                         stack.push(tag);
@@ -83,7 +79,6 @@ bool validade_file (char *filename) {
         }
 		/* Se sobrar tags na pilha significa que alguma tag não foi fechada */
         if (!stack.empty()) return false;
-
         file.close();
         return true;
     }
@@ -111,28 +106,22 @@ void get_tags (char *filename) {
 		/* Lê cada linha do arquivo */
         while (getline (file, line)) {
             i = j = 0;
-
 			/* Percorre cada caractere da linha */
             while (i < line.size()) {
                 if (line[i] == '<') {  /* Indica o início de uma tag */
                     j = i;
-
 					/* Obtém a tag */
                     while (line[j] != '>') j++;
                     tag = line.substr(i, j - i + 1);
-
 					/* Adiciona a tag à fila */
                     fila.enqueue(tag);
                     i = j + 1;
-
                 } else {  /* Indica o início do valor se alguma tag */
                     j = i;
-
 					/* Obtém o dado da tag */
                     while (line[j] != '<' && j < line.size()) j++;
                     data = line.substr(i, j - i);
                     i = j;
-
 					/* adiciona o dado à fila */
                     if (data[0] != '\0') {
                         fila.enqueue(data);
@@ -156,24 +145,18 @@ void get_datasets() {
     std::string elemento;
     int i, j;
     struct Dataset *dataset;
-
 	/* Percorre cada elemento da fila de tags e dados */
     while (!fila.empty()) {
-
 		/* Cria um novo conjunto de dados */
         dataset = new Dataset;
-
 		/* Obtém os dados dos conjuntos */
         while (true) {
 			/* Obtém a altura da imagem */
             if (elemento == "<height>") dataset->height = stoi(fila.dequeue());
-
 			/* Obtém a largura da imagem */
             else if (elemento == "<width>") dataset->width = stoi(fila.dequeue());
-
 			/* Obtém o nome da imagem */
             else if (elemento == "<name>") dataset->name = fila.dequeue();
-
 			/* Obtém a matriz de 0 e 1 */
             else if (elemento == "<data>") {
                 int **matrix = new int*[dataset->height];
@@ -194,7 +177,6 @@ void get_datasets() {
             elemento = fila.dequeue();
         }
         elemento = fila.dequeue();
-
 		/* Adiciona o novo dadaset à fila */
         datasets.enqueue(dataset);
     }
@@ -273,12 +255,10 @@ int get_conexes(struct Dataset *dataset) {
 void results() {
     int i;
     struct Dataset *dataset;
-
 	/* Percorre a fila de conjunto de dados */
     while (!datasets.empty()) {
 		/* retira um conjunto de dados para análise */
         dataset = datasets.dequeue();
-
         std::cout << dataset->name << ' ';
 		/* Calcula a quanidade de pontos conexos */
         std::cout << get_conexes(dataset) << std::endl;
