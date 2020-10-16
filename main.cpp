@@ -1,11 +1,11 @@
-//Copyright [2020] <Nicolas Vanz & Leonardo Rocha>
+//Copyright [2020] <Leonardo Rocha & Nicolas Vanz>
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include "fila.h"
 
-bool validade_file (char *filename);
+bool validate_file (char *filename);
 
 void get_tags (char *filename);
 
@@ -14,17 +14,23 @@ void get_datasets();
 void results();
 
 int main() {
+	char xmlfilename[100];
+	/* arquivo a ser processado */
+	std::cin >> xmlfilename;
 
-    char xmlfilename[100];
-    structures::LinkedQueue<std::string>fila{};
-    std::cin >> xmlfilename;  // entrada
+	/* verifica se o arquivo é válido*/
+	if (!validate_file(xmlfilename)) {
+		std::cout << "error\n";
 
-    if (!validade_file(xmlfilename)) {
-        std::cout << "error\n";
-    } else {
-        get_tags(xmlfilename);
-        get_datasets();
-        results();
-    }
-    return 0;
+	} else {
+		/* processa o arquivo e obtém as tags e seus valores*/
+		get_tags(xmlfilename);
+
+		/* organiza as tags e valores em datasets */
+		get_datasets();
+
+		/* processa os datasets e calcula os resultados */
+		results();
+	}
+	return 0;
 }
