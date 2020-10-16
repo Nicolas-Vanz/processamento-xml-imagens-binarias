@@ -8,109 +8,109 @@
 namespace structures {
 //! LinkedStack
 /*!
- * Classe que opera como uma pilha encadeada
- */
+* Classe que opera como uma pilha encadeada
+*/
 template<typename T>
 class LinkedStack {
  public:
-    //! Construtor
-    LinkedStack();
+	//! Construtor
+	LinkedStack();
 
-    //! Destrutor
-    ~LinkedStack();
+	//! Destrutor
+	~LinkedStack();
 
-    //! Limpar
-    void clear();
+	//! Limpar
+	void clear();
 
-    //! Empilhar
-    void push(const T& data);
+	//! Empilhar
+	void push(const T& data);
 
-    //! Desempilhar
-    T pop();
+	//! Desempilhar
+	T pop();
 
-    //! Dado do topo
-    T& top() const;
+	//! Dado do topo
+	T& top() const;
 
-    //! Pilha vazia
-    bool empty() const;
+	//! Pilha vazia
+	bool empty() const;
 
-    //! Tamanho da pilha
-    std::size_t size() const;
+	//! Tamanho da pilha
+	std::size_t size() const;
 
-    //! Display
-    void display();
+	//! Display
+	void display();
 
  private:
 	//! Node
- 	/*!
- 	 * Classe que representa um elemento da pilha
- 	 */
-    class Node {
-     public:
+	/*!
+	* Classe que representa um elemento da pilha
+	*/
+	class Node {
+	 public:
 		//! Contrutor
- 		/*!
- 		 * Cria um node especificando apenas seu dado
- 		 */
-        explicit Node(const T& data) {
-            data_ = data;
-        }
+		/*!
+		* Cria um node especificando apenas seu dado
+		*/
+		explicit Node(const T& data) {
+			data_ = data;
+		}
 
 		//! Construtor
 		/*!
-		 * Cria um node especificando seu dado e próximo node
-		 */
-        Node(const T& data, Node* next) {
-            data_ = data;
-            next_ = next;
-        }
+		* Cria um node especificando seu dado e próximo node
+		*/
+		Node(const T& data, Node* next) {
+			data_ = data;
+			next_ = next;
+		}
 
 		//! Getter: data
 		/*!
-		 * Retorna o dado do node
-		 */
-        T& data() {
-            return data_;
-        }
+		* Retorna o dado do node
+		*/
+		T& data() {
+			return data_;
+		}
 
 		//! Getter: const data
 		/*!
-		 * Retorna o dado do node
-		 */
-        const T& data() const {
-            return data_;
-        }
+		* Retorna o dado do node
+		*/
+		const T& data() const {
+			return data_;
+		}
 
 		//! Getter: next
 		/*!
-		 * Retorna o próximo node
-		 */
-        Node* next() {
-            return next_;
-        }
+		* Retorna o próximo node
+		*/
+		Node* next() {
+			return next_;
+		}
 
 		//! Getter: next const
 		/*!
-		 * Retorna o próximo node
-		 */
-        const Node* next() const {
-            return next_;
-        }
+		* Retorna o próximo node
+		*/
+		const Node* next() const {
+			return next_;
+		}
 
 		//! Setter: next
 		/*!
-		 * Determina o próximo node
-		 */
-        void next(Node* next) {
-            next_ = next;
-        }
+		* Determina o próximo node
+		*/
+		void next(Node* next) {
+			next_ = next;
+		}
 
-     private:
-        T data_;  //!< dado do node
-        Node* next_;  //!< ponteiro para o próximo node
-    };
+	 private:
+		T data_;  //!< dado do node
+		Node* next_;  //!< ponteiro para o próximo node
+	};
 
-    Node* top_;  //!< ponteiro para o topo da fila
-    std::size_t size_;  //!< tamanho da pilha
+	Node* top_;  //!< ponteiro para o topo da fila
+	std::size_t size_;  //!< tamanho da pilha
 };
 
 }  // namespace structures
@@ -122,8 +122,8 @@ class LinkedStack {
  */
 template<typename T>
 structures::LinkedStack<T>::LinkedStack() {
-    size_ = 0;
-    top_ = nullptr;
+	size_ = 0;
+	top_ = nullptr;
 }
 
 //! Destrutor
@@ -132,7 +132,7 @@ structures::LinkedStack<T>::LinkedStack() {
  */
 template<typename T>
 structures::LinkedStack<T>::~LinkedStack() {
-    clear();
+	clear();
 }
 
 //! Limpar
@@ -141,14 +141,14 @@ structures::LinkedStack<T>::~LinkedStack() {
  */
 template<typename T>
 void structures::LinkedStack<T>::clear() {
-    Node *p = top_, *q;
-    while (p) {
-        q = p;
-        p = p->next();
-        delete q;
-    }
-    size_ = 0;
-    top_ = nullptr;
+	Node *p = top_, *q;
+	while (p) {
+		q = p;
+		p = p->next();
+		delete q;
+	}
+	size_ = 0;
+	top_ = nullptr;
 }
 
 //! Empilhar
@@ -159,9 +159,9 @@ void structures::LinkedStack<T>::clear() {
  */
 template<typename T>
 void structures::LinkedStack<T>::push(const T& data) {
-    Node *t = new Node(data, top_);
-    top_ = t;
-    size_++;
+	Node *t = new Node(data, top_);
+	top_ = t;
+	size_++;
 }
 
 //! Desmpilhar
@@ -172,13 +172,13 @@ void structures::LinkedStack<T>::push(const T& data) {
  */
 template<typename T>
 T structures::LinkedStack<T>::pop() {
-    if (empty()) throw std::out_of_range("lista vazia");
-    Node *t = top_;
-    T data = t->data();
-    top_ = top_->next();
-    delete t;
-    size_--;
-    return data;
+	if (empty()) throw std::out_of_range("lista vazia");
+	Node *t = top_;
+	T data = t->data();
+	top_ = top_->next();
+	delete t;
+	size_--;
+	return data;
 }
 
 //! Dado do topo
@@ -187,8 +187,8 @@ T structures::LinkedStack<T>::pop() {
  */
 template<typename T>
 T& structures::LinkedStack<T>::top() const {
-    if (empty()) throw std::out_of_range("pilha vazia");
-    return top_->data();
+	if (empty()) throw std::out_of_range("pilha vazia");
+	return top_->data();
 }
 
 //! Pilha vazia
@@ -198,7 +198,7 @@ T& structures::LinkedStack<T>::top() const {
  */
 template<typename T>
 bool structures::LinkedStack<T>::empty() const {
-    return (!top_);
+	return (!top_);
 }
 
 //! Tamanho da pilha
@@ -207,7 +207,7 @@ bool structures::LinkedStack<T>::empty() const {
  */
 template<typename T>
 std::size_t structures::LinkedStack<T>::size() const {
-    return (size_);
+	return (size_);
 }
 
 //! Display
@@ -217,10 +217,10 @@ std::size_t structures::LinkedStack<T>::size() const {
  */
 template<typename T>
 void structures::LinkedStack<T>::display() {
-    Node *p = top_;
-    while (p) {
-        std::cout << p->data() << ' ';
-        p = p->next();
-    }
-    std::cout << std::endl;
+	Node *p = top_;
+	while (p) {
+		std::cout << p->data() << ' ';
+		p = p->next();
+	}
+	std::cout << std::endl;
 }

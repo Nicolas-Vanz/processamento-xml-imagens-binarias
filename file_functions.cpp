@@ -33,8 +33,8 @@ structures::LinkedStack<std::string>stack{}; //!< Pilha para armazenamento das t
  * \return true caso a tag seja de abertura ou false caso a tag seja de fechamento
  */
 bool is_open_tag(std::string tag) {
-    if (tag[1] == '/') return false;
-    return true;
+	if (tag[1] == '/') return false;
+	return true;
 }
 
 //! validate_file
@@ -48,41 +48,51 @@ bool is_open_tag(std::string tag) {
  * \note Uma estrutura de pilha é utilizada para a validação
  */
 bool validade_file (char *filename) {
-    std::string line, tag, top;
-    std::ifstream file(filename);
-    int i, j;
+	std::string line, tag, top;
+	std::ifstream file(filename);
+	int i, j;
+
 	/* Abre o arquivo */
-    if (file.is_open()) {
+	if (file.is_open()) {
+
 		/* Le cada linha do arquivo */
-        while (getline (file, line)) {
+		while (getline (file, line)) {
+
 			/* Le cada caractere da linha */
-            for (i = 0; i < line.size(); i++) {
+			for (i = 0; i < line.size(); i++) {
+
 				/* Verifica se o caractere indica uma tag */
-                if (line[i] == '<') {
-                    j = i;
-                    while (line[j] != '>') j++;
+				if (line[i] == '<') {
+					j = i;
+					while (line[j] != '>') j++;
+
 					/* Obtém a tag */
-                    tag = line.substr(i, j - i + 1);
-                    if (!is_open_tag(tag)) {  /* É uma tag de fechamento */
+					tag = line.substr(i, j - i + 1);
+
+					if (!is_open_tag(tag)) {  /* É uma tag de fechamento */
+
 						/* Analisa a validade da tag (se ela faz sentido no contexto do arquivo) */
 						/* Se a pilha está vazia significa que uma tag não foi aberta */
-                        if (stack.empty()) return false;
+						if (stack.empty()) return false;
+
 						/* Verifica se a tag fecha a tag de abertura correspondente */
-                        top = stack.pop();
-                        if (top.substr(1, top.size() - 2) != tag.substr(2, tag.size() - 3)) return false;
-                    } else {  /* É uma tag de abertura */
+						top = stack.pop();
+						if (top.substr(1, top.size() - 2) != tag.substr(2, tag.size() - 3)) return false;
+
+					} else {  /* É uma tag de abertura */
 						/* empilhada a tag*/
-                        stack.push(tag);
-                    }
-                }
-            }
-        }
+						stack.push(tag);
+					}
+				}
+			}
+		}
+
 		/* Se sobrar tags na pilha significa que alguma tag não foi fechada */
-        if (!stack.empty()) return false;
-        file.close();
-        return true;
-    }
-    return false;
+		if (!stack.empty()) return false;
+		file.close();
+		return true;
+	}
+	return false;
 }
 
 //! get_tags
@@ -98,38 +108,46 @@ bool validade_file (char *filename) {
  * \see validade_file()
  */
 void get_tags (char *filename) {
-    std::string tag, data, line;
-    std::ifstream file(filename);
-    int i, j;
+	std::string tag, data, line;
+	std::ifstream file(filename);
+	int i, j;
+
 	/* Abre o arquivo */
-    if (file.is_open()) {
+	if (file.is_open()) {
+
 		/* Lê cada linha do arquivo */
-        while (getline (file, line)) {
-            i = j = 0;
+		while (getline (file, line)) {
+			i = j = 0;
+
 			/* Percorre cada caractere da linha */
-            while (i < line.size()) {
-                if (line[i] == '<') {  /* Indica o início de uma tag */
-                    j = i;
+			while (i < line.size()) {
+				if (line[i] == '<') {  /* Indica o início de uma tag */
+					j = i;
+
 					/* Obtém a tag */
-                    while (line[j] != '>') j++;
-                    tag = line.substr(i, j - i + 1);
+					while (line[j] != '>') j++;
+					tag = line.substr(i, j - i + 1);
+
 					/* Adiciona a tag à fila */
-                    fila.enqueue(tag);
-                    i = j + 1;
-                } else {  /* Indica o início do valor se alguma tag */
-                    j = i;
+					fila.enqueue(tag);
+					i = j + 1;
+
+				} else {  /* Indica o início do valor se alguma tag */
+					j = i;
+
 					/* Obtém o dado da tag */
-                    while (line[j] != '<' && j < line.size()) j++;
-                    data = line.substr(i, j - i);
-                    i = j;
+					while (line[j] != '<' && j < line.size()) j++;
+					data = line.substr(i, j - i);
+					i = j;
+
 					/* adiciona o dado à fila */
-                    if (data[0] != '\0') {
-                        fila.enqueue(data);
-                    }
-                }
-            }
-        }
-    }
+					if (data[0] != '\0') {
+						fila.enqueue(data);
+					}
+				}
+			}
+		}
+	}
 }
 
 //! get_datasets
@@ -142,44 +160,52 @@ void get_tags (char *filename) {
  * \see get_tags()
  */
 void get_datasets() {
-    std::string elemento;
-    int i, j;
-    struct Dataset *dataset;
+	std::string elemento;
+	int i, j;
+	struct Dataset *dataset;
+
 	/* Percorre cada elemento da fila de tags e dados */
-    while (!fila.empty()) {
+	while (!fila.empty()) {
+
 		/* Cria um novo conjunto de dados */
-        dataset = new Dataset;
+		dataset = new Dataset;
+
 		/* Obtém os dados dos conjuntos */
-        while (true) {
+		while (true) {
+
 			/* Obtém a altura da imagem */
-            if (elemento == "<height>") dataset->height = stoi(fila.dequeue());
+			if (elemento == "<height>") dataset->height = stoi(fila.dequeue());
+
 			/* Obtém a largura da imagem */
-            else if (elemento == "<width>") dataset->width = stoi(fila.dequeue());
+			else if (elemento == "<width>") dataset->width = stoi(fila.dequeue());
+
 			/* Obtém o nome da imagem */
-            else if (elemento == "<name>") dataset->name = fila.dequeue();
+			else if (elemento == "<name>") dataset->name = fila.dequeue();
+
 			/* Obtém a matriz de 0 e 1 */
-            else if (elemento == "<data>") {
-                int **matrix = new int*[dataset->height];
-                for (i = 0; i < dataset->height; i++) {
-                    matrix[i] = new int[dataset->width];
-                }
-                for (i = 0; i < dataset->height; i++) {
-                    elemento = fila.dequeue();
-                    for (j = 0; j < dataset->width; j++) {
-                        if (elemento[j]){
-                            matrix[i][j] = (int)elemento[j] - 48;
-                        }
-                    }
-                }
-                dataset->data = matrix;
-            }
-            if (elemento == "</img>" || fila.empty()) break;
-            elemento = fila.dequeue();
-        }
-        elemento = fila.dequeue();
+			else if (elemento == "<data>") {
+				int **matrix = new int*[dataset->height];
+				for (i = 0; i < dataset->height; i++) {
+					matrix[i] = new int[dataset->width];
+				}
+				for (i = 0; i < dataset->height; i++) {
+					elemento = fila.dequeue();
+					for (j = 0; j < dataset->width; j++) {
+						if (elemento[j]){
+							matrix[i][j] = (int)elemento[j] - 48;
+						}
+					}
+				}
+				dataset->data = matrix;
+			}
+			if (elemento == "</img>" || fila.empty()) break;
+			elemento = fila.dequeue();
+		}
+		elemento = fila.dequeue();
+
 		/* Adiciona o novo dadaset à fila */
-        datasets.enqueue(dataset);
-    }
+		datasets.enqueue(dataset);
+	}
 }
 
 //! flood_fill

@@ -8,113 +8,113 @@
 namespace structures {
 //! LinkedQueue
 /*!
- * Classe que opera como uma fila encadeada
- */
+* Classe que opera como uma fila encadeada
+*/
 template<typename T>
 class LinkedQueue {
  public:
-    //! Construtor
-    LinkedQueue();
+	//! Construtor
+	LinkedQueue();
 
-    //! Destrutor
-    ~LinkedQueue();
+	//! Destrutor
+	~LinkedQueue();
 
-    //! Limpar
-    void clear();
+	//! Limpar
+	void clear();
 
-    //! Enfileirar
-    void enqueue(const T& data);
+	//! Enfileirar
+	void enqueue(const T& data);
 
-    //! Desenfileirar
-    T dequeue();
+	//! Desenfileirar
+	T dequeue();
 
-    //! Primeiro dado
-    T& front() const;
+	//! Primeiro dado
+	T& front() const;
 
-    //! Último dado
-    T& back() const;
+	//! Último dado
+	T& back() const;
 
-    //! Fila vazia
-    bool empty() const;
+	//! Fila vazia
+	bool empty() const;
 
-    //! Tamanho
-    std::size_t size() const;
+	//! Tamanho
+	std::size_t size() const;
 
-    //! Display
-    void display();
+	//! Display
+	void display();
 
  private:
-    //! Node
+	//! Node
 	/*!
-	 * Classe que representa um elemento da fila
-	 */
-    class Node {
-     public:
-        //! Contrutor
+	* Classe que representa um elemento da fila
+	*/
+	class Node {
+	 public:
+		//! Contrutor
 		/*!
-		 * Cria um node especificando apenas seu dado
-		 */
-        explicit Node(const T& data) {
-            data_ = data;
-        }
+		* Cria um node especificando apenas seu dado
+		*/
+		explicit Node(const T& data) {
+			data_ = data;
+		}
 
-        //! Construtor
+		//! Construtor
 		/*!
-		 * Cria um node especificando seu dado e próximo node
-		 */
-        Node(const T& data, Node* next) {
-            data_ = data;
-            next_ = next;
-        }
+		* Cria um node especificando seu dado e próximo node
+		*/
+		Node(const T& data, Node* next) {
+			data_ = data;
+			next_ = next;
+		}
 
-        //! Getter: data
+		//! Getter: data
 		/*!
-		 * Retorna o dado do node
-		 */
-        T& data() {
-            return data_;
-        }
+		* Retorna o dado do node
+		*/
+		T& data() {
+			return data_;
+		}
 
-        //! Getter: const data
+		//! Getter: const data
 		/*!
-		 * Retorna o dado do node
-		 */
-        const T& data() const {
-            return data_;
-        }
+		* Retorna o dado do node
+		*/
+		const T& data() const {
+			return data_;
+		}
 
-        //! Getter: next
+		//! Getter: next
 		/*!
-		 * Retorna o próximo node
-		 */
-        Node* next() {
-            return next_;
-        }
+		* Retorna o próximo node
+		*/
+		Node* next() {
+			return next_;
+		}
 
-        //! Getter: next const
+		//! Getter: next const
 		/*!
-		 * Retorna o próximo node
-		 */
-        const Node* next() const {
-            return next_;
-        }
+		* Retorna o próximo node
+		*/
+		const Node* next() const {
+			return next_;
+		}
 
-        //! Setter: next
+		//! Setter: next
 		/*!
-		 * Determina o próximo node
-		 */
-        void next(Node* next) {
-            next_ = next;
-        }
+		* Determina o próximo node
+		*/
+		void next(Node* next) {
+			next_ = next;
+		}
 
-     private:
-        T data_;  //!< dado do node
-        Node* next_;  //!< ponteiro para o próximo node
-    };
+	 private:
+		T data_;  //!< dado do node
+		Node* next_;  //!< ponteiro para o próximo node
+	};
 
-    Node* head;  //!< ponteiro para o início da fila
-    Node* tail;  //!< ponteiro para o final da fila
-    std::size_t size_;  //!< tamanho da fila
+	Node* head;  //!< ponteiro para o início da fila
+	Node* tail;  //!< ponteiro para o final da fila
+	std::size_t size_;  //!< tamanho da fila
 };
 
 }  // namespace structures
@@ -126,9 +126,9 @@ class LinkedQueue {
  */
 template<typename T>
 structures::LinkedQueue<T>::LinkedQueue() {
-    head = nullptr;
-    tail = nullptr;
-    size_ = 0;
+	head = nullptr;
+	tail = nullptr;
+	size_ = 0;
 }
 
 //! Destrutor
@@ -137,7 +137,7 @@ structures::LinkedQueue<T>::LinkedQueue() {
  */
 template<typename T>
 structures::LinkedQueue<T>::~LinkedQueue() {
-    clear();
+	clear();
 }
 
 //! Limpar
@@ -146,15 +146,15 @@ structures::LinkedQueue<T>::~LinkedQueue() {
  */
 template<typename T>
 void structures::LinkedQueue<T>::clear() {
-    Node *p = head, *q;
-    while (p) {
-        q = p;
-        p = p->next();
-        delete q;
-    }
-    head = nullptr;
-    tail = nullptr;
-    size_ = 0;
+	Node *p = head, *q;
+	while (p) {
+		q = p;
+		p = p->next();
+		delete q;
+	}
+	head = nullptr;
+	tail = nullptr;
+	size_ = 0;
 }
 
 //! Enfileirar
@@ -165,15 +165,15 @@ void structures::LinkedQueue<T>::clear() {
  */
 template<typename T>
 void structures::LinkedQueue<T>::enqueue(const T& data) {
-    Node *t = new Node(data, nullptr);
-    if (empty()) {
-        head = t;
-        tail = t;
-    } else {
-        tail->next(t);
-        tail = t;
-    }
-    size_++;
+	Node *t = new Node(data, nullptr);
+	if (empty()) {
+		head = t;
+		tail = t;
+	} else {
+		tail->next(t);
+		tail = t;
+	}
+	size_++;
 }
 
 //! Desenfileirar
@@ -184,13 +184,13 @@ void structures::LinkedQueue<T>::enqueue(const T& data) {
  */
 template<typename T>
 T structures::LinkedQueue<T>::dequeue() {
-    if (empty()) throw std::out_of_range("fila vazia");
-    Node *p = head;
-    T t = p->data();
-    head = head->next();
-    delete p;
-    size_--;
-    return t;
+	if (empty()) throw std::out_of_range("fila vazia");
+	Node *p = head;
+	T t = p->data();
+	head = head->next();
+	delete p;
+	size_--;
+	return t;
 }
 
 //! Primeiro dado
@@ -199,8 +199,8 @@ T structures::LinkedQueue<T>::dequeue() {
  */
 template<typename T>
 T& structures::LinkedQueue<T>::front() const {
-    if (empty()) throw std::out_of_range("fila vazia");
-    return head->data();
+	if (empty()) throw std::out_of_range("fila vazia");
+	return head->data();
 }
 
 //! Último dado
@@ -209,8 +209,8 @@ T& structures::LinkedQueue<T>::front() const {
  */
 template<typename T>
 T& structures::LinkedQueue<T>::back() const {
-    if (empty()) throw std::out_of_range("fila vazia");
-    return tail->data();
+	if (empty()) throw std::out_of_range("fila vazia");
+	return tail->data();
 }
 
 //! Fila vazia
@@ -220,7 +220,7 @@ T& structures::LinkedQueue<T>::back() const {
  */
 template<typename T>
 bool structures::LinkedQueue<T>::empty() const {
-    return (!head);
+	return (!head);
 }
 
 //! Tamanho
@@ -229,7 +229,7 @@ bool structures::LinkedQueue<T>::empty() const {
  */
 template<typename T>
 std::size_t structures::LinkedQueue<T>::size() const {
-    return size_;
+	return size_;
 }
 
 //! Display
@@ -239,9 +239,9 @@ std::size_t structures::LinkedQueue<T>::size() const {
  */
 template<typename T>
 void structures::LinkedQueue<T>::display() {
-    Node *p = head;
-    while (p) {
-        std::cout << p->data() << std::endl;
-        p = p->next();
-    }
+	Node *p = head;
+	while (p) {
+		std::cout << p->data() << std::endl;
+		p = p->next();
+	}
 }
