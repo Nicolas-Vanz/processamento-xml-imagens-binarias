@@ -5,7 +5,7 @@
 #include <string>
 #include "fila.h"
 
-bool validade_file (char *filename);
+bool validate_file (char *filename);
 
 void get_tags (char *filename);
 
@@ -15,10 +15,11 @@ void results();
 
 int main() {
 	char xmlfilename[100];
-	std::cin >> xmlfilename;  //!< arquivo a ser processado
+	/* arquivo a ser processado */
+	std::cin >> xmlfilename;
 
 	/* verifica se o arquivo é válido*/
-	if (!validade_file(xmlfilename)) {
+	if (!validate_file(xmlfilename)) {
 		std::cout << "error\n";
 
 	} else {

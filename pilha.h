@@ -6,48 +6,46 @@
 #include <stdexcept>
 
 namespace structures {
-//! LinkedStack
 /*!
 * Classe que opera como uma pilha encadeada
 */
 template<typename T>
 class LinkedStack {
  public:
-	//! Construtor
+	/* Construtor */
 	LinkedStack();
 
-	//! Destrutor
+	/* Destrutor */
 	~LinkedStack();
 
-	//! Limpar
+	/* Limpar */
 	void clear();
 
-	//! Empilhar
+	/* Empilhar */
 	void push(const T& data);
 
-	//! Desempilhar
+	/* Desempilhar */
 	T pop();
 
-	//! Dado do topo
+	/* Dado do topo */
 	T& top() const;
 
-	//! Pilha vazia
+	/* Pilha vazia */
 	bool empty() const;
 
-	//! Tamanho da pilha
+	/* Tamanho da pilha */
 	std::size_t size() const;
 
-	//! Display
+	/* Display */
 	void display();
 
  private:
-	//! Node
 	/*!
 	* Classe que representa um elemento da pilha
 	*/
 	class Node {
 	 public:
-		//! Contrutor
+		/* Contrutor */
 		/*!
 		* Cria um node especificando apenas seu dado
 		*/
@@ -55,7 +53,7 @@ class LinkedStack {
 			data_ = data;
 		}
 
-		//! Construtor
+		/* Construtor */
 		/*!
 		* Cria um node especificando seu dado e próximo node
 		*/
@@ -64,7 +62,7 @@ class LinkedStack {
 			next_ = next;
 		}
 
-		//! Getter: data
+		/* Getter: data */
 		/*!
 		* Retorna o dado do node
 		*/
@@ -72,7 +70,7 @@ class LinkedStack {
 			return data_;
 		}
 
-		//! Getter: const data
+		/* Getter: const data */
 		/*!
 		* Retorna o dado do node
 		*/
@@ -80,7 +78,7 @@ class LinkedStack {
 			return data_;
 		}
 
-		//! Getter: next
+		/* Getter: next */
 		/*!
 		* Retorna o próximo node
 		*/
@@ -88,7 +86,7 @@ class LinkedStack {
 			return next_;
 		}
 
-		//! Getter: next const
+		/* Getter: const next */
 		/*!
 		* Retorna o próximo node
 		*/
@@ -96,7 +94,7 @@ class LinkedStack {
 			return next_;
 		}
 
-		//! Setter: next
+		/* Setter: next */
 		/*!
 		* Determina o próximo node
 		*/
@@ -116,7 +114,6 @@ class LinkedStack {
 }  // namespace structures
 #endif
 
-//! Contrutor
 /*!
  * \brief Rotina construtora da pilha
  */
@@ -126,7 +123,6 @@ structures::LinkedStack<T>::LinkedStack() {
 	top_ = nullptr;
 }
 
-//! Destrutor
 /*!
  * \brief Rotina destrutora da pilha
  */
@@ -135,7 +131,6 @@ structures::LinkedStack<T>::~LinkedStack() {
 	clear();
 }
 
-//! Limpar
 /*!
  * \brief Remove todos os elementos da pilha
  */
@@ -151,7 +146,6 @@ void structures::LinkedStack<T>::clear() {
 	top_ = nullptr;
 }
 
-//! Empilhar
 /*!
  * \brief Adiciona um elemento à pilha
  * \param data dado a ser empilhado
@@ -164,7 +158,6 @@ void structures::LinkedStack<T>::push(const T& data) {
 	size_++;
 }
 
-//! Desmpilhar
 /*!
  * \brief Retira um dado da pilha
  * \return Dado retirado da pilha
@@ -181,7 +174,6 @@ T structures::LinkedStack<T>::pop() {
 	return data;
 }
 
-//! Dado do topo
 /*!
  * \brief Retorna o dado no topo da pilha
  */
@@ -191,7 +183,6 @@ T& structures::LinkedStack<T>::top() const {
 	return top_->data();
 }
 
-//! Pilha vazia
 /*!
  * \brief Verifica se a pilha está vazia
  * \return true caso a pilha esteja vazia ou false caso não esteja vazia
@@ -201,7 +192,6 @@ bool structures::LinkedStack<T>::empty() const {
 	return (!top_);
 }
 
-//! Tamanho da pilha
 /*!
  * \brief Retorna a quantidade de elementos da pilha
  */
@@ -210,10 +200,9 @@ std::size_t structures::LinkedStack<T>::size() const {
 	return (size_);
 }
 
-//! Display
 /*!
  * \brief Imprime o conteúdo da pilha
- * Utilizado como recurso de debug
+ * \note Utilizado como recurso para debugar
  */
 template<typename T>
 void structures::LinkedStack<T>::display() {

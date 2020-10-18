@@ -17,37 +17,42 @@ struct Dataset {
     int **data; //!< matriz de 0 e 1 da imagem
 };
 
-//! \name Estruturas de dados
-/**!{*/
-structures::LinkedQueue<std::string>fila{}; //!< Fila de todas as linhas do arquivo
-structures::LinkedQueue<struct Dataset*>datasets{}; //!< Fila de todas as imagens organizadas em datasets
-structures::LinkedStack<std::string>stack{}; //!< Pilha para armazenamento das tags.
-/**!}*/
+//! \defgroup grupo1 estruturas de dados
+/**@{*/
+structures::LinkedQueue<std::string>
+fila{}; //!< Fila usada para armazenar todas as linhas do arquivo
 
-//! is_open_tag
+structures::LinkedQueue<struct Dataset*>
+datasets{}; //!< Fila de todas as imagens organizadas em datasets
+
+structures::LinkedStack<std::string>
+stack{}; //!< Pilha para armazenamento das tags na validação do arquivo.
+/**@}*/
+
 /*!
  * \brief Verifica se uma tag é de abertura ou de fechamento
  *
- * \param tag tag a ser analizada
+ * \param tag tag a ser analisada
  *
- * \return true caso a tag seja de abertura ou false caso a tag seja de fechamento
+ * \return true caso a tag seja de abertura ou
+ * false caso a tag seja de fechamento
  */
 bool is_open_tag(std::string tag) {
 	if (tag[1] == '/') return false;
 	return true;
 }
 
-//! validate_file
 /*!
  * \brief Verifica se o arquivo é válido
  *
  * \param filename Nome do arquivo que sera analisado
  *
- * \return true caso o arquivo seja válido ou false caso o arquivo não seja válido
+ * \return true caso o arquivo seja válido ou
+ * false caso o arquivo não seja válido
  *
  * \note Uma estrutura de pilha é utilizada para a validação
  */
-bool validade_file (char *filename) {
+bool validate_file (char *filename) {
 	std::string line, tag, top;
 	std::ifstream file(filename);
 	int i, j;
@@ -58,7 +63,7 @@ bool validade_file (char *filename) {
 		/* Le cada linha do arquivo */
 		while (getline (file, line)) {
 
-			/* Le cada caractere da linha */
+			/* Lê cada caractere da linha */
 			for (i = 0; i < line.size(); i++) {
 
 				/* Verifica se o caractere indica uma tag */
@@ -70,17 +75,22 @@ bool validade_file (char *filename) {
 					tag = line.substr(i, j - i + 1);
 
 					if (!is_open_tag(tag)) {  /* É uma tag de fechamento */
+						/* Analisa a validade da tag
+						(se ela faz sentido no contexto do arquivo) */
 
-						/* Analisa a validade da tag (se ela faz sentido no contexto do arquivo) */
-						/* Se a pilha está vazia significa que uma tag não foi aberta */
+						/* Se a pilha está vazia significa
+						que uma tag não foi aberta */
 						if (stack.empty()) return false;
 
-						/* Verifica se a tag fecha a tag de abertura correspondente */
+						/* Verifica se a tag fecha a
+						tag de abertura correspondente */
 						top = stack.pop();
-						if (top.substr(1, top.size() - 2) != tag.substr(2, tag.size() - 3)) return false;
+						if (top.substr(1, top.size() - 2) !=
+							tag.substr(2, tag.size() - 3))
+							return false;
 
 					} else {  /* É uma tag de abertura */
-						/* empilhada a tag*/
+						/* empilha a tag*/
 						stack.push(tag);
 					}
 				}
@@ -95,7 +105,6 @@ bool validade_file (char *filename) {
 	return false;
 }
 
-//! get_tags
 /*!
  * \brief Extrai cada elemento do arquivo
  * Percorre todo o arquivo e extrai as tags e seus valores
@@ -103,9 +112,10 @@ bool validade_file (char *filename) {
  * \param filename Nome do arquivo de onde serão retiradas as tags.
  *
  * \note Uma fila é utilizada para armazenar cada elemento (tag ou valor da tag)
- * \note Essa rotina só é chamada se o arquivo é válido
+ * \note Essa rotina só é chamada depois do arquivo
+ * ser validado por validate_file()
  *
- * \see validade_file()
+ * \see validate_file()
  */
 void get_tags (char *filename) {
 	std::string tag, data, line;
@@ -150,12 +160,12 @@ void get_tags (char *filename) {
 	}
 }
 
-//! get_datasets
 /*!
  * \brief Organiza as tags e seus valores em conjuntos de dados
  *
  * \note É utilizada uma fila para armazenar os conjuntos de dados (datasets)
- * \note Essa função só é chamada depois que as tags e seus valores foram processados
+ * \note Essa função só é chamada depois que as tags
+ * e seus valores foram processados por get_tags()
  *
  * \see get_tags()
  */
@@ -174,13 +184,16 @@ void get_datasets() {
 		while (true) {
 
 			/* Obtém a altura da imagem */
-			if (elemento == "<height>") dataset->height = stoi(fila.dequeue());
+			if (elemento == "<height>")
+				dataset->height = stoi(fila.dequeue());
 
 			/* Obtém a largura da imagem */
-			else if (elemento == "<width>") dataset->width = stoi(fila.dequeue());
+			else if (elemento == "<width>")
+				dataset->width = stoi(fila.dequeue());
 
 			/* Obtém o nome da imagem */
-			else if (elemento == "<name>") dataset->name = fila.dequeue();
+			else if (elemento == "<name>")
+				dataset->name = fila.dequeue();
 
 			/* Obtém a matriz de 0 e 1 */
 			else if (elemento == "<data>") {
@@ -208,18 +221,17 @@ void get_datasets() {
 	}
 }
 
-//! flood_fill
 /*!
  * \brief Preenche um componente conexo da matriz
  *
  * Percorre todos os elementos iguais a 1
- * adjacentes à coordenada (/param x, \param y)
+ * adjacentes à coordenada (x, y)
  *
  * \param dataset Ponteiro para o conjunto de dados a ser analisado
  * \param x Linha da matriz a ser analisada
  * \param y Coluna da matriz a ser analisada
  *
- * \note Essa função usa um meio recusivo para preencher o componente
+ * \note Essa função usa um meio recursivo para preencher o componente
 */
 void flood_fill(struct Dataset *dataset, int x, int y) {
     if (dataset->data[x][y] == 1) {
@@ -231,10 +243,9 @@ void flood_fill(struct Dataset *dataset, int x, int y) {
     }
 }
 
-//! Display
 /*!
  * \brief Imprime todos os dados de um dataset
- * Utilizado como ferramenta de debug
+ * \note Utilizado como ferramenta para debugar
  *
  * \param p Ponteiro do dataset a ser mostrado
  */
@@ -249,15 +260,15 @@ void display(struct Dataset *p) {
     std::cout << std::endl;
 }
 
-//! get_conexes
 /*!
  * \brief Retorna a quantidade de componentes conexos da imagem
  *
  * \param dataset Ponteiro do dataset a ser analisado
  *
- * \return Quantidade de componentes conexos
+ * \return Quantidade de componentes conexos da imagem representada pelo dataset
  *
- * \note É chamado um algoritmo recursivo para o preenchimento do componente conexo
+ * \note É chamado um algoritmo recursivo para
+ * o preenchimento do componente conexo
  *
  * \see flood_fill()
  */
@@ -274,9 +285,8 @@ int get_conexes(struct Dataset *dataset) {
 	return conexes;
 }
 
-//! Results
 /*!
- * \brief Imprime os resultados dos calculos de cada conjunto de dados
+ * \brief Imprime os resultados dos cálculos de cada conjunto de dados
  */
 void results() {
     int i;

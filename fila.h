@@ -6,51 +6,49 @@
 #include <stdexcept>
 
 namespace structures {
-//! LinkedQueue
 /*!
 * Classe que opera como uma fila encadeada
 */
 template<typename T>
 class LinkedQueue {
  public:
-	//! Construtor
+	/* Construtor */
 	LinkedQueue();
 
-	//! Destrutor
+	/* Destrutor */
 	~LinkedQueue();
 
-	//! Limpar
+	/* Limpar */
 	void clear();
 
-	//! Enfileirar
+	/* Enfileirar */
 	void enqueue(const T& data);
 
-	//! Desenfileirar
+	/* Desenfileirar */
 	T dequeue();
 
-	//! Primeiro dado
+	/* Primeiro dado */
 	T& front() const;
 
-	//! Último dado
+	/* Último dado */
 	T& back() const;
 
-	//! Fila vazia
+	/* Fila vazia */
 	bool empty() const;
 
-	//! Tamanho
+	/* Tamanho */
 	std::size_t size() const;
 
-	//! Display
+	/* Display */
 	void display();
 
  private:
-	//! Node
 	/*!
 	* Classe que representa um elemento da fila
 	*/
 	class Node {
 	 public:
-		//! Contrutor
+		/* Contrutor */
 		/*!
 		* Cria um node especificando apenas seu dado
 		*/
@@ -58,7 +56,7 @@ class LinkedQueue {
 			data_ = data;
 		}
 
-		//! Construtor
+		/* Construtor */
 		/*!
 		* Cria um node especificando seu dado e próximo node
 		*/
@@ -67,7 +65,7 @@ class LinkedQueue {
 			next_ = next;
 		}
 
-		//! Getter: data
+		/* Getter: data */
 		/*!
 		* Retorna o dado do node
 		*/
@@ -75,7 +73,7 @@ class LinkedQueue {
 			return data_;
 		}
 
-		//! Getter: const data
+		/* Getter: const data */
 		/*!
 		* Retorna o dado do node
 		*/
@@ -83,7 +81,7 @@ class LinkedQueue {
 			return data_;
 		}
 
-		//! Getter: next
+		/* Getter: next */
 		/*!
 		* Retorna o próximo node
 		*/
@@ -91,7 +89,7 @@ class LinkedQueue {
 			return next_;
 		}
 
-		//! Getter: next const
+		/* Getter: const next */
 		/*!
 		* Retorna o próximo node
 		*/
@@ -99,7 +97,7 @@ class LinkedQueue {
 			return next_;
 		}
 
-		//! Setter: next
+		/* Setter: next */
 		/*!
 		* Determina o próximo node
 		*/
@@ -120,7 +118,6 @@ class LinkedQueue {
 }  // namespace structures
 #endif
 
-//! Construtor
 /*!
  * \brief Rotina construtora da fila
  */
@@ -131,7 +128,6 @@ structures::LinkedQueue<T>::LinkedQueue() {
 	size_ = 0;
 }
 
-//! Destrutor
 /*!
  * \brief Rotina destrutora da fila
  */
@@ -140,7 +136,6 @@ structures::LinkedQueue<T>::~LinkedQueue() {
 	clear();
 }
 
-//! Limpar
 /*!
  * \brief Retira todos os elementos da fila
  */
@@ -157,7 +152,6 @@ void structures::LinkedQueue<T>::clear() {
 	size_ = 0;
 }
 
-//! Enfileirar
 /*!
  * \brief Adiciona um elemento à fila
  * \param data dado tipo T a ser enfileirado
@@ -176,7 +170,6 @@ void structures::LinkedQueue<T>::enqueue(const T& data) {
 	size_++;
 }
 
-//! Desenfileirar
 /*!
  * \brief Retira um elemento da fila
  * \return Dado removido da fila
@@ -193,7 +186,6 @@ T structures::LinkedQueue<T>::dequeue() {
 	return t;
 }
 
-//! Primeiro dado
 /*!
  * \brief Retorna o primeiro dado da fila
  */
@@ -203,7 +195,6 @@ T& structures::LinkedQueue<T>::front() const {
 	return head->data();
 }
 
-//! Último dado
 /*!
  * \brief Retorna o último elemento da fila
  */
@@ -213,7 +204,6 @@ T& structures::LinkedQueue<T>::back() const {
 	return tail->data();
 }
 
-//! Fila vazia
 /*!
  * \brief Verifica se a fila está vazia
  * \return true caso a lista esteja vazia ou false caso não esteja vazia
@@ -223,7 +213,6 @@ bool structures::LinkedQueue<T>::empty() const {
 	return (!head);
 }
 
-//! Tamanho
 /*!
  * \brief Retorna a quantidade de elementos da fila
  */
@@ -232,10 +221,9 @@ std::size_t structures::LinkedQueue<T>::size() const {
 	return size_;
 }
 
-//! Display
 /*!
  * \brief Imprime o conteúdo da fila
- * Utilizado como recurso de debug
+ * \note Utilizado como recurso para debugar
  */
 template<typename T>
 void structures::LinkedQueue<T>::display() {
